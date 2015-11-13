@@ -22,4 +22,20 @@ class TimesheetSpec extends Specification {
         'DENIED'         | true               | false
         'TO_BE_REVIEWED' | false              | null
     }
+
+    @Unroll('When reviewedByCustomer is #reviewedByCustomer and approvedByCustomer is #approvedByCustomer then reviewStatus should be #reviewStatus')
+    void "test retrieving the value of the enum property"() {
+        given:
+        def timesheet = new Timesheet(reviewedByCustomer: reviewedByCustomer,
+                                      approvedByCustomer: approvedByCustomer)
+
+        expect:
+        timesheet.reviewStatus == reviewStatus
+
+        where:
+        reviewStatus                | reviewedByCustomer | approvedByCustomer
+        ReviewStatus.APPROVED       | true               | true
+        ReviewStatus.DENIED         | true               | false
+        ReviewStatus.TO_BE_REVIEWED | false              | null
+    }
 }
